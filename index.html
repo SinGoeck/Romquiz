@@ -4,40 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gladiator Quiz – Antikes Rom</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --gold:    #c9922a;
-  --gold2:   #f0c060;
-  --red:     #8b1a1a;
-  --red2:    #c0392b;
-  --cream:   #f5ead8;
-  --parch:   #e8d5b0;
-  --stone:   #2a1f14;
-  --stone2:  #3d2e1e;
-  --stone3:  #5a4030;
-  --ink:     #1a1008;
-  --correct: #2d6a2d;
-  --wrong:   #8b1a1a;
+  --gold:   #c9922a;
+  --gold2:  #f0c060;
+  --cream:  #f5ead8;
+  --parch:  #e8d5b0;
+  --stone:  #2a1f14;
+  --stone2: #3d2e1e;
+  --ink:    #1a1008;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Crimson Text', Georgia, serif;
-  background: var(--stone);
-  color: var(--cream);
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #2a1f14;
+  color: #f5ead8;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
-/* ── MOSAIC BACKGROUND ── */
 body::before {
   content: '';
   position: fixed; inset: 0;
   background-image:
-    repeating-linear-gradient(45deg, rgba(201,146,42,0.04) 0, rgba(201,146,42,0.04) 1px, transparent 0, transparent 50%),
-    repeating-linear-gradient(-45deg, rgba(201,146,42,0.04) 0, rgba(201,146,42,0.04) 1px, transparent 0, transparent 50%);
+    repeating-linear-gradient(45deg, rgba(201,146,42,0.05) 0, rgba(201,146,42,0.05) 1px, transparent 0, transparent 50%),
+    repeating-linear-gradient(-45deg, rgba(201,146,42,0.05) 0, rgba(201,146,42,0.05) 1px, transparent 0, transparent 50%);
   background-size: 28px 28px;
   pointer-events: none;
   z-index: 0;
@@ -45,727 +37,437 @@ body::before {
 
 .wrap {
   position: relative; z-index: 1;
-  max-width: 760px;
+  max-width: 740px;
   margin: 0 auto;
   padding: 30px 20px 60px;
 }
 
-/* ══════════ TITLE SCREEN ══════════ */
-#screen-title {
-  text-align: center;
-  padding-top: 20px;
-}
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active { display: block; }
 
-.laurel-row {
-  font-size: 32px;
-  letter-spacing: 8px;
-  color: var(--gold);
-  margin-bottom: 10px;
-  animation: shimmer 3s ease-in-out infinite;
-}
-@keyframes shimmer {
-  0%,100% { opacity:.7; }
-  50%      { opacity:1; }
-}
+/* ── TITLE ── */
+.laurel { text-align:center; font-size:28px; letter-spacing:8px; color:#c9922a; margin-bottom:10px; }
 
 .title-main {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(28px, 7vw, 54px);
+  text-align: center;
+  font-size: clamp(32px, 8vw, 58px);
   font-weight: 900;
-  color: var(--gold2);
-  text-shadow: 0 2px 8px rgba(0,0,0,.6), 0 0 30px rgba(201,146,42,.3);
+  font-variant: small-caps;
+  letter-spacing: 4px;
+  color: #f0c060;
+  text-shadow: 0 2px 10px rgba(0,0,0,.6), 0 0 30px rgba(201,146,42,.3);
   line-height: 1.1;
   margin-bottom: 8px;
 }
 .title-sub {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(13px, 3vw, 18px);
-  color: var(--parch);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 30px;
-  opacity: .85;
-}
-
-.scroll-card {
-  background: linear-gradient(160deg, #3d2e1e 0%, #2a1f14 60%, #1e1509 100%);
-  border: 2px solid var(--gold);
-  border-radius: 4px;
-  padding: 28px 32px;
-  margin: 0 auto 32px;
-  max-width: 540px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(240,192,96,.15);
-  position: relative;
-}
-.scroll-card::before, .scroll-card::after {
-  content: '⬡';
-  position: absolute;
-  color: var(--gold);
+  text-align: center;
   font-size: 14px;
-  opacity: .5;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #e8d5b0;
+  opacity: .75;
+  margin-bottom: 28px;
 }
-.scroll-card::before { top: 8px; left: 12px; }
-.scroll-card::after  { bottom: 8px; right: 12px; }
 
-.scroll-card p {
-  font-size: 17px;
-  line-height: 1.65;
-  color: var(--parch);
-  margin-bottom: 10px;
+.card {
+  background: linear-gradient(160deg, #3d2e1e 0%, #2a1f14 100%);
+  border: 2px solid #c9922a;
+  border-radius: 4px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
 }
-.scroll-card p:last-child { margin-bottom: 0; }
 
-.stat-row {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin: 24px 0;
-  flex-wrap: wrap;
-}
+.card p { font-size: 17px; line-height: 1.65; color: #e8d5b0; margin-bottom: 10px; }
+.card p:last-child { margin-bottom: 0; }
+
+.stat-row { display:flex; justify-content:center; gap:20px; margin:20px 0; flex-wrap:wrap; }
 .stat {
   background: rgba(201,146,42,.12);
   border: 1px solid rgba(201,146,42,.3);
   border-radius: 3px;
-  padding: 10px 20px;
-  text-align: center;
+  padding: 10px 20px; text-align:center;
 }
-.stat-num {
-  font-family: 'Cinzel', serif;
-  font-size: 26px;
-  color: var(--gold2);
-  display: block;
-  font-weight: 700;
-}
-.stat-label {
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--parch);
-  opacity: .7;
-}
+.stat-num { display:block; font-size:26px; font-weight:700; color:#f0c060; font-variant:small-caps; }
+.stat-lbl { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:#e8d5b0; opacity:.7; }
 
-.btn-start {
-  font-family: 'Cinzel', serif;
+.btn-gold {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  font-family: Georgia, serif;
   font-size: 18px;
   font-weight: 700;
+  font-variant: small-caps;
   letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--stone);
-  background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 50%, #a07020 100%);
+  color: #1a1008;
+  background: linear-gradient(135deg, #f0c060 0%, #c9922a 50%, #a07020 100%);
   border: none;
-  padding: 16px 48px;
+  padding: 15px 40px;
   border-radius: 3px;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(201,146,42,.4);
   transition: transform .15s, box-shadow .15s;
-  margin-top: 8px;
 }
-.btn-start:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(201,146,42,.5);
-}
-.btn-start:active { transform: translateY(0); }
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,146,42,.5); }
+.btn-gold:active { transform: translateY(1px); }
 
-/* ══════════ QUIZ SCREEN ══════════ */
-#screen-quiz { display: none; }
+.ornament { text-align:center; color:#c9922a; opacity:.4; font-size:16px; letter-spacing:8px; margin:22px 0; }
 
-/* Progress bar */
-.progress-bar-wrap {
-  background: rgba(255,255,255,.08);
-  border-radius: 99px;
-  height: 6px;
-  margin-bottom: 28px;
-  overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold), var(--gold2));
-  border-radius: 99px;
-  transition: width .4s ease;
-}
+/* ── QUIZ SCREEN ── */
+.prog-wrap { background:rgba(255,255,255,.08); border-radius:99px; height:6px; margin-bottom:24px; overflow:hidden; }
+.prog-fill  { height:100%; background:linear-gradient(90deg,#c9922a,#f0c060); border-radius:99px; transition:width .4s; }
 
-/* Question header */
-.q-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-.q-num {
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: .8;
-}
-.q-score {
-  font-family: 'Cinzel', serif;
-  font-size: 13px;
-  color: var(--gold2);
-}
-.q-score span { font-weight: 700; }
+.q-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.q-num  { font-size:12px; letter-spacing:3px; text-transform:uppercase; color:#c9922a; opacity:.85; }
+.q-pts  { font-size:13px; color:#f0c060; }
+.q-pts span { font-weight:700; }
 
-/* Question card */
 .q-card {
   background: linear-gradient(160deg, #3d2e1e 0%, #2a1f14 100%);
   border: 2px solid rgba(201,146,42,.4);
   border-radius: 4px;
-  padding: 28px 28px 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 6px 30px rgba(0,0,0,.4);
+  padding: 24px 24px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.4);
 }
+.q-cat   { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#c9922a; opacity:.7; margin-bottom:8px; }
+.q-emoji { font-size:34px; display:block; margin-bottom:10px; }
+.q-text  { font-size: clamp(16px,3.5vw,20px); font-weight:700; color:#f5ead8; line-height:1.4; }
 
-.q-category {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: .7;
-  margin-bottom: 10px;
-}
-
-.q-emoji {
-  font-size: 36px;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.q-text {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(16px, 3.5vw, 20px);
-  font-weight: 600;
-  color: var(--cream);
-  line-height: 1.4;
-}
-
-/* Answer buttons */
-.answers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-@media(max-width: 500px){ .answers { grid-template-columns: 1fr; } }
+.answers { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+@media(max-width:480px){ .answers { grid-template-columns:1fr; } }
 
 .ans-btn {
   background: rgba(42,31,20,.8);
   border: 1.5px solid rgba(201,146,42,.25);
   border-radius: 4px;
-  padding: 14px 16px;
+  padding: 13px 14px;
   text-align: left;
   cursor: pointer;
-  transition: background .15s, border-color .15s, transform .1s;
-  color: var(--cream);
-  font-family: 'Crimson Text', serif;
-  font-size: 16px;
+  color: #f5ead8;
+  font-family: Georgia, serif;
+  font-size: 15px;
   line-height: 1.35;
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  transition: background .15s, border-color .15s, transform .1s;
 }
 .ans-btn:hover:not(:disabled) {
   background: rgba(201,146,42,.15);
-  border-color: var(--gold);
+  border-color: #c9922a;
   transform: translateY(-1px);
 }
 .ans-btn:disabled { cursor: default; }
 
-.ans-letter {
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--gold);
-  background: rgba(201,146,42,.15);
-  border: 1px solid rgba(201,146,42,.3);
-  border-radius: 2px;
-  width: 22px; height: 22px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  margin-top: 1px;
+.ans-ltr {
+  font-size:11px; font-weight:700; color:#c9922a;
+  background:rgba(201,146,42,.15); border:1px solid rgba(201,146,42,.3);
+  border-radius:2px; width:22px; height:22px; min-width:22px;
+  display:flex; align-items:center; justify-content:center;
+  margin-top:1px;
 }
 
-.ans-btn.correct {
-  background: rgba(45,106,45,.35) !important;
-  border-color: #4caf50 !important;
-}
-.ans-btn.correct .ans-letter { background: rgba(76,175,80,.3); border-color: #4caf50; color: #7dcc7d; }
+.ans-btn.correct { background:rgba(45,106,45,.35) !important; border-color:#4caf50 !important; }
+.ans-btn.correct .ans-ltr { background:rgba(76,175,80,.3); border-color:#4caf50; color:#7dcc7d; }
+.ans-btn.wrong   { background:rgba(139,26,26,.3) !important; border-color:#c0392b !important; }
+.ans-btn.wrong .ans-ltr { background:rgba(192,57,43,.3); border-color:#c0392b; color:#e07070; }
+.ans-btn.reveal  { background:rgba(45,106,45,.18) !important; border-color:rgba(76,175,80,.4) !important; opacity:.75; }
 
-.ans-btn.wrong {
-  background: rgba(139,26,26,.3) !important;
-  border-color: #c0392b !important;
-}
-.ans-btn.wrong .ans-letter { background: rgba(192,57,43,.3); border-color: #c0392b; color: #e07070; }
-
-.ans-btn.reveal {
-  background: rgba(45,106,45,.2) !important;
-  border-color: rgba(76,175,80,.5) !important;
-  opacity: .7;
-}
-
-/* Feedback */
 .feedback {
   background: rgba(42,31,20,.9);
   border-radius: 4px;
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  border-left: 4px solid var(--gold);
+  padding: 15px 18px;
+  margin-bottom: 16px;
+  border-left: 4px solid #c9922a;
   font-size: 16px;
   line-height: 1.55;
-  color: var(--parch);
+  color: #e8d5b0;
   display: none;
-  animation: fadeIn .25s ease;
 }
-@keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
-.feedback.show { display: block; }
-.feedback strong { color: var(--gold2); font-family:'Cinzel',serif; font-size:13px; letter-spacing:1px; }
+.feedback.show { display:block; animation: fadeUp .25s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+.feedback strong { color:#f0c060; font-size:13px; letter-spacing:1px; font-variant:small-caps; }
 
 .btn-next {
-  font-family: 'Cinzel', serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--stone);
-  background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 100%);
-  border: none;
-  padding: 13px 36px;
-  border-radius: 3px;
-  cursor: pointer;
-  display: none;
-  width: 100%;
-  box-shadow: 0 3px 14px rgba(201,146,42,.3);
+  font-family: Georgia, serif;
+  font-size:15px; font-weight:700; font-variant:small-caps;
+  letter-spacing:2px; color:#1a1008;
+  background: linear-gradient(135deg,#f0c060 0%,#c9922a 100%);
+  border:none; padding:13px 36px; border-radius:3px;
+  cursor:pointer; width:100%;
+  box-shadow:0 3px 14px rgba(201,146,42,.3);
+  display:none;
   transition: opacity .15s, transform .15s;
 }
-.btn-next.show { display: block; }
-.btn-next:hover { opacity: .9; transform: translateY(-1px); }
+.btn-next.show { display:block; }
+.btn-next:hover { opacity:.9; transform:translateY(-1px); }
 
-/* ══════════ RESULT SCREEN ══════════ */
-#screen-result { display: none; text-align: center; }
+/* ── RESULT ── */
+#screen-result { text-align:center; }
 
-.result-title {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(22px, 5vw, 38px);
-  font-weight: 900;
-  color: var(--gold2);
-  text-shadow: 0 2px 10px rgba(0,0,0,.5);
-  margin-bottom: 8px;
+.res-title {
+  font-size: clamp(24px,6vw,40px);
+  font-weight:900; font-variant:small-caps;
+  color:#f0c060; letter-spacing:3px;
+  text-shadow:0 2px 10px rgba(0,0,0,.5);
+  margin-bottom:6px;
 }
-.result-subtitle {
-  font-family: 'Cinzel', serif;
-  font-size: 14px;
-  letter-spacing: 3px;
-  color: var(--parch);
-  opacity: .7;
-  margin-bottom: 28px;
-  text-transform: uppercase;
-}
+.res-sub { font-size:13px; letter-spacing:4px; text-transform:uppercase; color:#e8d5b0; opacity:.7; margin-bottom:24px; }
+.res-badge { font-size:68px; display:block; margin-bottom:12px; animation: popIn .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes popIn { from{transform:scale(0);opacity:0} to{transform:scale(1);opacity:1} }
+.res-score { font-size:clamp(42px,10vw,68px); font-weight:700; color:#f0c060; display:block; line-height:1; margin-bottom:4px; }
+.res-of    { font-size:15px; color:#e8d5b0; opacity:.7; margin-bottom:24px; }
+.res-rank  { font-size:clamp(18px,4vw,26px); font-weight:700; font-variant:small-caps; color:#c9922a; margin-bottom:8px; }
+.res-comment { font-size:17px; color:#e8d5b0; line-height:1.55; max-width:480px; margin:0 auto 28px; opacity:.85; }
 
-.result-badge {
-  font-size: 72px;
-  margin-bottom: 16px;
-  display: block;
-  animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes popIn { from { transform:scale(0); opacity:0; } to { transform:scale(1); opacity:1; } }
-
-.result-score-big {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(40px, 10vw, 70px);
-  font-weight: 700;
-  color: var(--gold2);
-  display: block;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.result-score-label {
-  font-size: 16px;
-  color: var(--parch);
-  opacity: .7;
-  margin-bottom: 28px;
-}
-
-.result-rank {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(18px, 4vw, 26px);
-  font-weight: 700;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-.result-comment {
-  font-size: 17px;
-  color: var(--parch);
-  line-height: 1.55;
-  max-width: 480px;
-  margin: 0 auto 32px;
-  opacity: .85;
-}
-
-/* Breakdown */
 .breakdown {
   background: rgba(42,31,20,.8);
   border: 1px solid rgba(201,146,42,.25);
-  border-radius: 4px;
-  padding: 20px 24px;
-  margin-bottom: 28px;
-  text-align: left;
+  border-radius:4px; padding:18px 22px; margin-bottom:24px; text-align:left;
 }
-.breakdown h4 {
-  font-family: 'Cinzel', serif;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: .7;
-  margin-bottom: 14px;
-}
-.bd-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: var(--parch);
-  line-height: 1.4;
-}
-.bd-icon { font-size: 16px; flex-shrink:0; margin-top:1px; }
-
-.btn-retry {
-  font-family: 'Cinzel', serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--stone);
-  background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 100%);
-  border: none;
-  padding: 14px 44px;
-  border-radius: 3px;
-  cursor: pointer;
-  box-shadow: 0 4px 18px rgba(201,146,42,.35);
-  transition: transform .15s, box-shadow .15s;
-}
-.btn-retry:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(201,146,42,.45); }
-
-/* Divider ornament */
-.ornament { text-align:center; color:var(--gold); opacity:.4; font-size:18px; letter-spacing:8px; margin:20px 0; }
+.breakdown h4 { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#c9922a; opacity:.7; margin-bottom:12px; }
+.bd-row { display:flex; gap:10px; margin-bottom:9px; font-size:15px; color:#e8d5b0; line-height:1.4; align-items:flex-start; }
+.bd-icon { flex-shrink:0; margin-top:1px; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- ══════════ TITLE ══════════ -->
-<div id="screen-title">
-  <div class="laurel-row">🌿 ✦ 🌿</div>
-  <div class="title-main">GLADIATOR<br>QUIZ</div>
+<!-- ══ TITLE ══ -->
+<div id="screen-title" class="screen active">
+  <div class="laurel">🌿 ✦ 🌿</div>
+  <div class="title-main">Gladiator Quiz</div>
   <div class="title-sub">Das antike Rom</div>
 
-  <div class="scroll-card">
-    <p>Willkommen im Kolosseum des Wissens, Schüler! Beweise dein Können und steige vom einfachen <em>tiro</em> zum ehrwürdigen <em>Imperator</em> auf.</p>
-    <p>15 Fragen erwarten dich – von Kaiser und Göttern bis zu Alltagsleben und Militär.</p>
+  <div class="card">
+    <p>Willkommen im Kolosseum des Wissens! Beweise dein Können und steige vom einfachen <em>Tiro</em> zum ehrwürdigen <em>Imperator</em> auf.</p>
+    <p>15 Fragen erwarten dich – von Kaisern und Göttern bis zu Alltagsleben und Militär.</p>
     <div class="stat-row">
-      <div class="stat"><span class="stat-num">15</span><span class="stat-label">Fragen</span></div>
-      <div class="stat"><span class="stat-num">4</span><span class="stat-label">Themen</span></div>
-      <div class="stat"><span class="stat-num">🏆</span><span class="stat-label">Rangtitel</span></div>
+      <div class="stat"><span class="stat-num">15</span><span class="stat-lbl">Fragen</span></div>
+      <div class="stat"><span class="stat-num">4</span><span class="stat-lbl">Themen</span></div>
+      <div class="stat"><span class="stat-num">🏆</span><span class="stat-lbl">Rangtitel</span></div>
     </div>
   </div>
 
-  <button class="btn-start" onclick="startQuiz()">⚔ Quiz starten ⚔</button>
+  <button class="btn-gold" id="btnStart">⚔ Quiz starten ⚔</button>
   <div class="ornament">— ✦ SPQR ✦ —</div>
 </div>
 
-<!-- ══════════ QUIZ ══════════ -->
-<div id="screen-quiz">
-  <div class="progress-bar-wrap">
-    <div class="progress-bar-fill" id="progBar" style="width:0%"></div>
-  </div>
+<!-- ══ QUIZ ══ -->
+<div id="screen-quiz" class="screen">
+  <div class="prog-wrap"><div class="prog-fill" id="progBar" style="width:0%"></div></div>
   <div class="q-meta">
     <div class="q-num" id="qNum">Frage 1 von 15</div>
-    <div class="q-score">Punkte: <span id="scoreDisp">0</span></div>
+    <div class="q-pts">Punkte: <span id="scoreDisp">0</span></div>
   </div>
-
   <div class="q-card">
-    <div class="q-category" id="qCat"></div>
+    <div class="q-cat"  id="qCat"></div>
     <span class="q-emoji" id="qEmoji"></span>
     <div class="q-text" id="qText"></div>
   </div>
-
-  <div class="answers" id="answers"></div>
+  <div class="answers"  id="answers"></div>
   <div class="feedback" id="feedback"></div>
-  <button class="btn-next" id="btnNext" onclick="nextQuestion()">Weiter →</button>
+  <button class="btn-next" id="btnNext">Weiter →</button>
 </div>
 
-<!-- ══════════ RESULT ══════════ -->
-<div id="screen-result">
-  <div class="laurel-row">🌿 ✦ 🌿</div>
-  <div class="result-title">QUIZ BEENDET!</div>
-  <div class="result-subtitle">Dein Ergebnis</div>
-
-  <span class="result-badge" id="resBadge"></span>
-  <span class="result-score-big" id="resScore"></span>
-  <div class="result-score-label">von 15 Fragen richtig</div>
-
-  <div class="result-rank" id="resRank"></div>
-  <div class="result-comment" id="resComment"></div>
-
-  <div class="breakdown" id="breakdown">
-    <h4>⚔ Deine Antworten</h4>
-  </div>
-
-  <button class="btn-retry" onclick="restartQuiz()">↺ Nochmal versuchen</button>
+<!-- ══ RESULT ══ -->
+<div id="screen-result" class="screen">
+  <div class="laurel">🌿 ✦ 🌿</div>
+  <div class="res-title">Quiz beendet!</div>
+  <div class="res-sub">Dein Ergebnis</div>
+  <span class="res-badge"   id="resBadge"></span>
+  <span class="res-score"   id="resScore"></span>
+  <div  class="res-of">von 15 Fragen richtig</div>
+  <div  class="res-rank"    id="resRank"></div>
+  <div  class="res-comment" id="resComment"></div>
+  <div  class="breakdown"   id="breakdown"><h4>⚔ Deine Antworten</h4></div>
+  <button class="btn-gold" id="btnRetry">↺ Nochmal versuchen</button>
   <div class="ornament" style="margin-top:28px">— ✦ SPQR ✦ —</div>
 </div>
 
-</div><!-- /wrap -->
+</div>
 
 <script>
-const questions = [
-  {
-    cat: "🏛 Geschichte & Kaiser",
-    emoji: "👑",
-    q: "Welcher Ausspruch wird Julius Cäsar nach seinem Sieg über den pontischen König Pharnakes II. zugeschrieben?",
-    a: ["Veni, vidi, vici", "Alea iacta est", "Et tu, Brute?", "Carpe diem"],
-    correct: 0,
-    fact: "„Ich kam, sah und siegte" – Cäsar soll diesen Satz in einem Brief an den Senat geschrieben haben. Sehr selbstbewusst!"
-  },
-  {
-    cat: "🏛 Geschichte & Kaiser",
-    emoji: "🗡",
-    q: "An welchem berühmten Tag wurde Julius Cäsar ermordet?",
-    a: ["An den Iden des März (15. März 44 v. Chr.)", "Am 1. April 45 v. Chr.", "An Silvester 44 v. Chr.", "Am Geburtstag des Augustus"],
-    correct: 0,
-    fact: "Die Iden des März – Cäsar wurde im Theater des Pompeius von über 20 Verschwörern mit Dolchen getötet. Shakespeare machte diesen Tag weltberühmt."
-  },
-  {
-    cat: "🏛 Geschichte & Kaiser",
-    emoji: "🏺",
-    q: "Wie hieß der erste römische Kaiser?",
-    a: ["Nero", "Caligula", "Augustus", "Tiberius"],
-    correct: 2,
-    fact: "Augustus (früher: Octavian) wurde 27 v. Chr. zum ersten Kaiser Roms ernannt. Er regierte über 40 Jahre lang – die längste Regentschaft eines römischen Kaisers."
-  },
-  {
-    cat: "⚔ Militär & Gladiatoren",
-    emoji: "🛡",
-    q: "Wie hieß die wichtigste Kampfeinheit im römischen Heer?",
-    a: ["Kohorte", "Legion", "Zenturie", "Manipel"],
-    correct: 1,
-    fact: "Eine Legion bestand aus etwa 4.000–6.000 Soldaten und war die Grundlage des römischen Militärs. „Legio" kommt von „legere" – auswählen."
-  },
-  {
-    cat: "⚔ Militär & Gladiatoren",
-    emoji: "🏟",
-    q: "Für welchen Zweck wurde das Kolosseum in Rom hauptsächlich genutzt?",
-    a: ["Als Tempel für Jupiter", "Für Gladiatorenkämpfe und Spektakel", "Als kaiserlicher Palast", "Als Marktplatz"],
-    correct: 1,
-    fact: "Das Kolosseum fasste bis zu 50.000 Zuschauer! Neben Gladiatorenkämpfen fanden dort auch Tierhetzen (venationes) und sogar Seeschlachten (naumachiae) statt."
-  },
-  {
-    cat: "⚔ Militär & Gladiatoren",
-    emoji: "✊",
-    q: "Was bedeutete der Daumen nach unten (pollice verso) im Gladiatorenkampf?",
-    a: ["Der Sieger soll seinen Gegner töten", "Der Verlierer soll begnadigt werden", "Der Kaiser verlässt die Arena", "Ein Unentschieden wird erklärt"],
-    correct: 0,
-    fact: "Pollice verso bedeutete wörtlich „umgewendeter Daumen" – das Publikum entschied damit über Leben und Tod. Der genaue Ursprung ist aber bis heute unter Historikern umstritten!"
-  },
-  {
-    cat: "🌍 Stadt & Alltag",
-    emoji: "🏙",
-    q: "Wie nannten die Römer ihre Hauptstadt stolz?",
-    a: ["Urbs Aeterna – die Ewige Stadt", "Roma Mater – die Mutterstadt", "Caput Mundi – Haupt der Welt", "Magna Urbs – die Große Stadt"],
-    correct: 2,
-    fact: "„Caput Mundi" – Haupt der Welt! Beide Beinamen (auch Urbs Aeterna) sind geläufig, aber Caput Mundi war der politische Ehrentitel für Roms Herrschaft über das Mittelmeer."
-  },
-  {
-    cat: "🌍 Stadt & Alltag",
-    emoji: "🛁",
-    q: "Was waren die „Thermen" im antiken Rom?",
-    a: ["Öffentliche Badehäuser", "Heizkraftwerke für Paläste", "Getreidespeicher", "Militärkasernen"],
-    correct: 0,
-    fact: "Die Thermen waren das soziale Herzstück Roms – nicht nur zum Baden, sondern auch zum Treffen, Sport treiben und Klatschen! Die Caracalla-Thermen fassten 1.600 Badende gleichzeitig."
-  },
-  {
-    cat: "🌍 Stadt & Alltag",
-    emoji: "🍞",
-    q: "Wie hieß das Grundnahrungsmittel der einfachen römischen Bevölkerung?",
-    a: ["Pasta", "Puls (Getreidebrei)", "Reis", "Kartoffeln"],
-    correct: 1,
-    fact: "Puls war ein dicker Brei aus Dinkel oder Emmer – das tägliche Essen der Armen. Pasta und Kartoffeln kannte man im antiken Rom noch gar nicht!"
-  },
-  {
-    cat: "⚡ Götter & Religion",
-    emoji: "⚡",
-    q: "Wer war der oberste Gott im römischen Pantheon?",
-    a: ["Mars", "Neptun", "Jupiter", "Merkur"],
-    correct: 2,
-    fact: "Jupiter – Gott des Himmels, des Donners und der Gerechtigkeit – war der König der Götter. Sein griechisches Pendant war Zeus. Sein heiliges Tier: der Adler – auch Wahrzeichen Roms."
-  },
-  {
-    cat: "⚡ Götter & Religion",
-    emoji: "🔱",
-    q: "Welcher Gott war der Schutzpatron des Krieges?",
-    a: ["Vulcanus", "Mars", "Janus", "Pluto"],
-    correct: 1,
-    fact: "Mars gab sogar dem Monat März seinen Namen! Er war nach Jupiter der bedeutendste Gott Roms. Der griechische Ares war sein Pendant – aber die Römer verehrten Mars weit mehr."
-  },
-  {
-    cat: "⚡ Götter & Religion",
-    emoji: "🏛",
-    q: "Welches berühmte Bauwerk in Rom war allen Göttern gewidmet?",
-    a: ["Das Forum Romanum", "Das Pantheon", "Der Circus Maximus", "Die Trajans-Säule"],
-    correct: 1,
-    fact: "Pantheon kommt aus dem Griechischen: „pan" (alle) + „theos" (Gott). Das bis heute erhaltene Gebäude hat eine Kuppel mit einem Loch (Oculus) – der einzigen Lichtquelle!"
-  },
-  {
-    cat: "🏛 Geschichte & Kaiser",
-    emoji: "🌋",
-    q: "Welche berühmte Stadt wurde 79 n. Chr. beim Ausbruch des Vesuvs begraben?",
-    a: ["Carthago", "Pompeii", "Neapel", "Syracus"],
-    correct: 1,
-    fact: "Pompeii wurde unter einer meterdicken Ascheschicht begraben und dadurch konserviert. Heute wissen wir dank der Ausgrabungen viel über den Alltag der Römer!"
-  },
-  {
-    cat: "🌍 Stadt & Alltag",
-    emoji: "📜",
-    q: "Was bedeutet die Abkürzung „SPQR", die auf römischen Bannern stand?",
-    a: ["Senatus Populusque Romanus", "Soldati Per Quintum Romanum", "Semper Pugna Quam Refuge", "Status Publicus Qui Regnat"],
-    correct: 0,
-    fact: "„Der Senat und das Volk von Rom" – SPQR symbolisierte die Einheit von Regierung und Bevölkerung. Noch heute ist SPQR das offizielle Wappen der Stadt Rom!"
-  },
-  {
-    cat: "⚔ Militär & Gladiatoren",
-    emoji: "⛓",
-    q: "Welcher berühmte Sklave führte einen der größten Sklavenaufstände gegen Rom an?",
-    a: ["Hannibal", "Spartacus", "Vercingetorix", "Arminius"],
-    correct: 1,
-    fact: "Spartacus – ein thrakischer Gladiator – führte 73–71 v. Chr. einen Aufstand mit bis zu 120.000 Sklaven an. Er wurde schließlich von Crassus besiegt. Sein Name wurde zum Symbol für Freiheitskampf."
-  }
+var questions = [
+  { cat:"🏛 Geschichte & Kaiser", emoji:"👑",
+    q:"Welcher Ausspruch wird Julius Cäsar nach seinem Sieg über Pharnakes II. zugeschrieben?",
+    a:["Veni, vidi, vici","Alea iacta est","Et tu, Brute?","Carpe diem"], correct:0,
+    fact:"„Ich kam, sah und siegte" – Cäsar soll diesen Satz in einem Brief an den Senat geschrieben haben. Sehr selbstbewusst!" },
+  { cat:"🏛 Geschichte & Kaiser", emoji:"🗡",
+    q:"An welchem berühmten Tag wurde Julius Cäsar ermordet?",
+    a:["An den Iden des März (15. März 44 v. Chr.)","Am 1. April 45 v. Chr.","An Silvester 44 v. Chr.","Am Geburtstag des Augustus"], correct:0,
+    fact:"Die Iden des März – Cäsar wurde im Theater des Pompeius von über 20 Verschwörern mit Dolchen getötet. Shakespeare machte diesen Tag weltberühmt." },
+  { cat:"🏛 Geschichte & Kaiser", emoji:"🏺",
+    q:"Wie hieß der erste römische Kaiser?",
+    a:["Nero","Caligula","Augustus","Tiberius"], correct:2,
+    fact:"Augustus (früher: Octavian) wurde 27 v. Chr. zum ersten Kaiser ernannt und regierte über 40 Jahre – die längste Regentschaft eines römischen Kaisers." },
+  { cat:"⚔ Militär & Gladiatoren", emoji:"🛡",
+    q:"Wie hieß die wichtigste Kampfeinheit im römischen Heer?",
+    a:["Kohorte","Legion","Zenturie","Manipel"], correct:1,
+    fact:"Eine Legion bestand aus etwa 4.000–6.000 Soldaten. „Legio" kommt von „legere" – auswählen. Sie war das Rückgrat der römischen Weltmacht." },
+  { cat:"⚔ Militär & Gladiatoren", emoji:"🏟",
+    q:"Für welchen Zweck wurde das Kolosseum hauptsächlich genutzt?",
+    a:["Als Tempel für Jupiter","Für Gladiatorenkämpfe und Spektakel","Als kaiserlicher Palast","Als Marktplatz"], correct:1,
+    fact:"Das Kolosseum fasste bis zu 50.000 Zuschauer! Neben Gladiatorenkämpfen gab es Tierhetzen und sogar nachgestellte Seeschlachten." },
+  { cat:"⚔ Militär & Gladiatoren", emoji:"✊",
+    q:"Was bedeutete der Daumen nach unten (pollice verso) im Gladiatorenkampf?",
+    a:["Der Sieger soll seinen Gegner töten","Der Verlierer wird begnadigt","Der Kaiser verlässt die Arena","Ein Unentschieden wird erklärt"], correct:0,
+    fact:"Pollice verso – „umgewendeter Daumen" – ließ das Publikum über Leben und Tod entscheiden. Der genaue Ursprung ist unter Historikern aber bis heute umstritten!" },
+  { cat:"🌍 Stadt & Alltag", emoji:"🏙",
+    q:"Wie wurde Rom stolz genannt – als Haupt der Welt?",
+    a:["Urbs Aeterna","Roma Mater","Caput Mundi","Magna Urbs"], correct:2,
+    fact:"„Caput Mundi" – Haupt der Welt! Dieser Titel symbolisierte Roms Herrschaft über das gesamte Mittelmeer." },
+  { cat:"🌍 Stadt & Alltag", emoji:"🛁",
+    q:"Was waren die „Thermen" im antiken Rom?",
+    a:["Öffentliche Badehäuser","Heizkraftwerke","Getreidespeicher","Militärkasernen"], correct:0,
+    fact:"Die Thermen waren das soziale Herzstück Roms – zum Baden, Treffen und Sport treiben. Die Caracalla-Thermen fassten 1.600 Badende gleichzeitig!" },
+  { cat:"🌍 Stadt & Alltag", emoji:"🍞",
+    q:"Wie hieß das Grundnahrungsmittel der einfachen römischen Bevölkerung?",
+    a:["Pasta","Puls (Getreidebrei)","Reis","Kartoffeln"], correct:1,
+    fact:"Puls war ein dicker Brei aus Dinkel oder Emmer – das tägliche Essen der Armen. Pasta und Kartoffeln kannte man im antiken Rom noch gar nicht!" },
+  { cat:"⚡ Götter & Religion", emoji:"⚡",
+    q:"Wer war der oberste Gott im römischen Pantheon?",
+    a:["Mars","Neptun","Jupiter","Merkur"], correct:2,
+    fact:"Jupiter – Gott des Himmels und des Donners – war König der Götter. Sein griechisches Pendant war Zeus. Sein heiliges Tier: der Adler – auch Wahrzeichen Roms." },
+  { cat:"⚡ Götter & Religion", emoji:"🔱",
+    q:"Welcher Gott war der Schutzpatron des Krieges?",
+    a:["Vulcanus","Mars","Janus","Pluto"], correct:1,
+    fact:"Mars gab dem Monat März seinen Namen! Er war nach Jupiter der bedeutendste Gott Roms. Der griechische Ares war sein Pendant." },
+  { cat:"⚡ Götter & Religion", emoji:"🏛",
+    q:"Welches Bauwerk in Rom war allen Göttern gewidmet?",
+    a:["Das Forum Romanum","Das Pantheon","Der Circus Maximus","Die Trajanssäule"], correct:1,
+    fact:"Pantheon: „pan" (alle) + „theos" (Gott). Die bis heute erhaltene Kuppel hat ein Loch in der Mitte – den Oculus – als einzige Lichtquelle!" },
+  { cat:"🏛 Geschichte & Kaiser", emoji:"🌋",
+    q:"Welche berühmte Stadt wurde 79 n. Chr. beim Ausbruch des Vesuvs begraben?",
+    a:["Carthago","Pompeji","Neapel","Syrakus"], correct:1,
+    fact:"Pompeji wurde unter meterdicke Ascheschichten begraben und dadurch konserviert. Wir wissen dadurch viel über den Alltag der Römer!" },
+  { cat:"🌍 Stadt & Alltag", emoji:"📜",
+    q:"Was bedeutet die Abkürzung „SPQR" auf römischen Bannern?",
+    a:["Senatus Populusque Romanus","Soldati Per Quintum Romanum","Semper Pugna Quam Refuge","Status Publicus Qui Regnat"], correct:0,
+    fact:"„Der Senat und das Volk von Rom" – SPQR symbolisierte die Einheit von Regierung und Bevölkerung. Noch heute ist es das offizielle Wappen Roms!" },
+  { cat:"⚔ Militär & Gladiatoren", emoji:"⛓",
+    q:"Welcher Sklave führte einen der größten Aufstände gegen Rom an?",
+    a:["Hannibal","Spartacus","Vercingetorix","Arminius"], correct:1,
+    fact:"Spartacus – ein thrakischer Gladiator – führte 73–71 v. Chr. einen Aufstand mit bis zu 120.000 Sklaven an. Sein Name wurde zum Symbol für Freiheitskampf." }
 ];
 
-let currentQ = 0;
-let score = 0;
-let answers = [];
-let shuffled = [];
+var shuffled = [];
+var currentQ = 0;
+var score = 0;
+var answers = [];
 
 function shuffle(arr) {
-  const a = [...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
   }
   return a;
+}
+
+function show(id) {
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+  document.getElementById(id).classList.add('active');
 }
 
 function startQuiz() {
   shuffled = shuffle(questions);
   currentQ = 0; score = 0; answers = [];
-  document.getElementById('screen-title').style.display = 'none';
-  document.getElementById('screen-quiz').style.display = 'block';
-  showQuestion();
+  show('screen-quiz');
+  renderQuestion();
 }
 
-function showQuestion() {
-  const q = shuffled[currentQ];
-  const total = shuffled.length;
-
-  document.getElementById('progBar').style.width = (currentQ/total*100)+'%';
-  document.getElementById('qNum').textContent = 'Frage '+(currentQ+1)+' von '+total;
+function renderQuestion() {
+  var q = shuffled[currentQ];
+  var total = shuffled.length;
+  document.getElementById('progBar').style.width = (currentQ / total * 100) + '%';
+  document.getElementById('qNum').textContent = 'Frage ' + (currentQ + 1) + ' von ' + total;
   document.getElementById('scoreDisp').textContent = score;
   document.getElementById('qCat').textContent = q.cat;
   document.getElementById('qEmoji').textContent = q.emoji;
   document.getElementById('qText').textContent = q.q;
 
-  const letters = ['A','B','C','D'];
-  const ansDiv = document.getElementById('answers');
+  var letters = ['A','B','C','D'];
+  var ansDiv = document.getElementById('answers');
   ansDiv.innerHTML = '';
-
-  q.a.forEach(function(opt, i){
-    const btn = document.createElement('button');
+  for (var i = 0; i < q.a.length; i++) {
+    var btn = document.createElement('button');
     btn.className = 'ans-btn';
-    btn.innerHTML = '<span class="ans-letter">'+letters[i]+'</span><span>'+opt+'</span>';
-    btn.onclick = function(){ selectAnswer(i); };
+    btn.setAttribute('data-idx', i);
+    btn.innerHTML = '<span class="ans-ltr">' + letters[i] + '</span><span>' + q.a[i] + '</span>';
+    btn.onclick = (function(idx){ return function(){ pick(idx); }; })(i);
     ansDiv.appendChild(btn);
-  });
-
-  document.getElementById('feedback').className = 'feedback';
-  document.getElementById('feedback').innerHTML = '';
-  document.getElementById('btnNext').className = 'btn-next';
-  document.getElementById('btnNext').textContent = currentQ < shuffled.length-1 ? 'Weiter →' : 'Ergebnis anzeigen 🏆';
-}
-
-function selectAnswer(idx) {
-  const q = shuffled[currentQ];
-  const btns = document.querySelectorAll('.ans-btn');
-
-  btns.forEach(function(b){ b.disabled = true; });
-
-  const isCorrect = idx === q.correct;
-  if(isCorrect) score++;
-  answers.push({q: q.q, chosen: idx, correct: q.correct, ok: isCorrect});
-
-  btns[idx].classList.add(isCorrect ? 'correct' : 'wrong');
-  if(!isCorrect) btns[q.correct].classList.add('reveal');
-
-  const fb = document.getElementById('feedback');
-  fb.innerHTML = (isCorrect
-    ? '<strong>✓ RICHTIG!</strong> '
-    : '<strong>✗ LEIDER FALSCH</strong> – Richtig wäre: <em>'+q.a[q.correct]+'</em><br><br>')
-    + q.fact;
-  fb.className = 'feedback show';
-
-  document.getElementById('btnNext').className = 'btn-next show';
-  document.getElementById('scoreDisp').textContent = score;
-}
-
-function nextQuestion() {
-  currentQ++;
-  if(currentQ >= shuffled.length){
-    showResult();
-  } else {
-    showQuestion();
   }
+
+  var fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.innerHTML = '';
+  var btnNext = document.getElementById('btnNext');
+  btnNext.className = 'btn-next';
+  btnNext.textContent = (currentQ < shuffled.length - 1) ? 'Weiter →' : 'Ergebnis anzeigen 🏆';
+}
+
+function pick(idx) {
+  var q = shuffled[currentQ];
+  var btns = document.querySelectorAll('.ans-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+
+  var ok = idx === q.correct;
+  if (ok) score++;
+  answers.push({ q: q.q, chosen: idx, correct: q.correct, ok: ok });
+
+  btns[idx].classList.add(ok ? 'correct' : 'wrong');
+  if (!ok) btns[q.correct].classList.add('reveal');
+
+  var fb = document.getElementById('feedback');
+  fb.innerHTML = (ok ? '<strong>✓ Richtig!</strong> ' : '<strong>✗ Leider falsch</strong> – Richtig: <em>' + q.a[q.correct] + '</em><br><br>') + q.fact;
+  fb.className = 'feedback show';
+  document.getElementById('scoreDisp').textContent = score;
+  document.getElementById('btnNext').className = 'btn-next show';
+}
+
+function nextQ() {
+  currentQ++;
+  if (currentQ >= shuffled.length) showResult();
+  else renderQuestion();
 }
 
 function showResult() {
-  document.getElementById('screen-quiz').style.display = 'none';
-  document.getElementById('screen-result').style.display = 'block';
-
-  const pct = score / shuffled.length;
-  let badge, rank, comment;
-
-  if(pct >= 0.93){
-    badge='🏆'; rank='IMPERATOR'; comment='Außergewöhnlich! Du kennst das antike Rom wie ein echter Historiker. Ave, Imperator!';
-  } else if(pct >= 0.8){
-    badge='🦅'; rank='SENATOR'; comment='Hervorragend! Du hast tiefes Wissen über das Römische Reich. Der Senat wäre stolz auf dich!';
-  } else if(pct >= 0.65){
-    badge='⚔'; rank='CENTURIO'; comment='Gut gemacht, Soldat! Du kennst die wichtigsten Fakten. Mit etwas Übung wirst du bald Senator!';
-  } else if(pct >= 0.45){
-    badge='🛡'; rank='LEGIONÄR'; comment='Nicht schlecht für einen Rekruten! Du weißt schon einiges – aber die Legionen fordern noch mehr!';
-  } else {
-    badge='🎯'; rank='TIRO (Neuling)'; comment='Der Weg zum Imperator ist noch lang! Aber keine Sorge – auch Cäsar hat klein angefangen. Versuch es nochmal!';
-  }
-
-  document.getElementById('resBadge').textContent = badge;
-  document.getElementById('resScore').textContent = score + ' / ' + shuffled.length;
-  document.getElementById('resRank').textContent = '🏅 Rang: ' + rank;
-  document.getElementById('resComment').textContent = comment;
+  show('screen-result');
   document.getElementById('progBar').style.width = '100%';
 
-  // Breakdown
-  const bd = document.getElementById('breakdown');
+  var pct = score / shuffled.length;
+  var badge, rank, comment;
+  if (pct >= 0.93) { badge='🏆'; rank='IMPERATOR';  comment='Außergewöhnlich! Du kennst das antike Rom wie ein echter Historiker. Ave, Imperator!'; }
+  else if (pct >= 0.8)  { badge='🦅'; rank='SENATOR';    comment='Hervorragend! Du hast tiefes Wissen. Der Senat wäre stolz auf dich!'; }
+  else if (pct >= 0.65) { badge='⚔';  rank='CENTURIO';   comment='Gut gemacht, Soldat! Du kennst die wichtigsten Fakten. Mit etwas Übung wirst du bald Senator!'; }
+  else if (pct >= 0.45) { badge='🛡';  rank='LEGIONÄR';   comment='Nicht schlecht für einen Rekruten! Aber die Legionen fordern noch mehr!'; }
+  else                   { badge='🎯'; rank='TIRO (Neuling)'; comment='Der Weg zum Imperator ist noch lang! Auch Cäsar hat klein angefangen – versuch es nochmal!'; }
+
+  document.getElementById('resBadge').textContent  = badge;
+  document.getElementById('resScore').textContent  = score + ' / ' + shuffled.length;
+  document.getElementById('resRank').textContent   = '🏅 Rang: ' + rank;
+  document.getElementById('resComment').textContent = comment;
+
+  var bd = document.getElementById('breakdown');
   bd.innerHTML = '<h4>⚔ Deine Antworten</h4>';
-  answers.forEach(function(a){
-    const div = document.createElement('div');
-    div.className = 'bd-item';
-    div.innerHTML = '<span class="bd-icon">'+(a.ok?'✅':'❌')+'</span><span>'+a.q+'</span>';
-    bd.appendChild(div);
-  });
+  for (var i = 0; i < answers.length; i++) {
+    var row = document.createElement('div');
+    row.className = 'bd-row';
+    row.innerHTML = '<span class="bd-icon">' + (answers[i].ok ? '✅' : '❌') + '</span><span>' + answers[i].q + '</span>';
+    bd.appendChild(row);
+  }
 }
 
-function restartQuiz() {
-  document.getElementById('screen-result').style.display = 'none';
-  document.getElementById('screen-title').style.display = 'block';
-}
+// Wire up buttons after DOM is ready
+document.getElementById('btnStart').onclick  = startQuiz;
+document.getElementById('btnNext').onclick   = nextQ;
+document.getElementById('btnRetry').onclick  = function() { show('screen-title'); };
 </script>
 </body>
 </html>
